@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+  <persistence-unit name="MigracionCreditosPU" transaction-type="RESOURCE_LOCAL">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <class>ConexionFirebird.CategoriaIva</class>
+    <class>ConexionFirebird.CodigoPostal</class>
+    <class>ConexionFirebird.Creditos</class>
+    <class>ConexionFirebird.DNosi</class>
+    <class>ConexionFirebird.EstadoEstablecimientos</class>
+    <class>ConexionFirebird.PersDireccion</class>
+    <class>ConexionFirebird.Personas</class>
+    <class>ConexionFirebird.Provincias</class>
+    <class>ConexionFirebird.TipoDirecciones</class>
+    <class>Entidades.Barrio</class>
+    <class>Entidades.Boleto</class>
+    <class>Entidades.BonDetalle</class>
+    <class>Entidades.BonTasa</class>
+    <class>Entidades.BonTasaEstado</class>
+    <class>Entidades.BonTasaIndice</class>
+    <class>Entidades.Bonificacion</class>
+    <class>Entidades.CConcepto</class>
+    <class>Entidades.CaducidadPlazo</class>
+    <class>Entidades.Calle</class>
+    <class>Entidades.Caratula</class>
+    <class>Entidades.Certificado</class>
+    <class>Entidades.Concepto</class>
+    <class>Entidades.Count</class>
+    <class>Entidades.Ctacte</class>
+    <class>Entidades.Cuentabancaria</class>
+    <class>Entidades.Cuota</class>
+    <class>Entidades.CuotaBonTasa</class>
+    <class>Entidades.Desembolso</class>
+    <class>Entidades.Domicilio</class>
+    <class>Entidades.DomicilioObjetoi</class>
+    <class>Entidades.Emergencia</class>
+    <class>Entidades.EmergenciaPeriodo</class>
+    <class>Entidades.Emideta</class>
+    <class>Entidades.Emision</class>
+    <class>Entidades.Estado</class>
+    <class>Entidades.Indice</class>
+    <class>Entidades.IndiceValor</class>
+    <class>Entidades.JbpmAction</class>
+    <class>Entidades.JbpmDelegation</class>
+    <class>Entidades.JbpmEvent</class>
+    <class>Entidades.JbpmExceptionhandler</class>
+    <class>Entidades.JbpmModuledefinition</class>
+    <class>Entidades.JbpmNode</class>
+    <class>Entidades.JbpmProcessdefinition</class>
+    <class>Entidades.JbpmProcessinstance</class>
+    <class>Entidades.JbpmSwimlane</class>
+    <class>Entidades.JbpmTask</class>
+    <class>Entidades.JbpmTaskcontroller</class>
+    <class>Entidades.JbpmToken</class>
+    <class>Entidades.JbpmTransition</class>
+    <class>Entidades.Leyenda</class>
+    <class>Entidades.Linea</class>
+    <class>Entidades.Localidad</class>
+    <class>Entidades.Nacionalidad</class>
+    <class>Entidades.Numerador</class>
+    <class>Entidades.Objetoi</class>
+    <class>Entidades.ObjetoiBonificacion</class>
+    <class>Entidades.ObjetoiComportamiento</class>
+    <class>Entidades.ObjetoiEmergencia</class>
+    <class>Entidades.ObjetoiEstado</class>
+    <class>Entidades.ObjetoiIndice</class>
+    <class>Entidades.ObservacionObjetoi</class>
+    <class>Entidades.OrdePago</class>
+    <class>Entidades.Pais</class>
+    <class>Entidades.Persona</class>
+    <class>Entidades.PersonaRev</class>
+    <class>Entidades.Provin</class>
+    <class>Entidades.QQIngresados</class>
+    <class>Entidades.Requisito</class>
+    <class>Entidades.Sector</class>
+    <class>Entidades.SubTipoLinea</class>
+    <class>Entidades.Tipodoc</class>
+    <class>Entidades.Tipomov</class>
+    <class>Entidades.TitularesBonTasa</class>
+    <class>Entidades.Tsoci</class>
+    <class>Entidades.Turno</class>
+    <class>Entidades.Vinedo</class>
+    <class>Entidades.Vpersona</class>
+    <properties>
+      <property name="toplink.jdbc.user" value="admin"/>
+      <property name="toplink.jdbc.password" value="1234567"/>
+      <property name="toplink.jdbc.url" value="jdbc:sqlserver://SRV-SII\SQL_SII:0;databaseName=MIGRA3_CRED_FTYC"/>
+      <property name="toplink.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="MigracionCreditosPU2" transaction-type="RESOURCE_LOCAL">
+    <provider>oracle.toplink.essentials.PersistenceProvider</provider>
+    <properties>
+      <property name="toplink.jdbc.user" value="sysdba"/>
+      <property name="toplink.jdbc.password" value="masterkey "/>
+      <property name="toplink.jdbc.url" value="jdbc:firebirdsql:Srv-dc-01:d:\teagro\db\FTYCMBonif.GDB"/>
+      <property name="toplink.jdbc.driver" value="org.firebirdsql.jdbc.FBDriver"/>
+    </properties>
+  </persistence-unit>
+</persistence>
