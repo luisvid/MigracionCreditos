@@ -14,10 +14,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import Entidades.BonTasa;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 public class BonTasaEstadoJpaController implements Serializable {
 
@@ -35,7 +39,16 @@ public class BonTasaEstadoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            BonTasa bonTasaid = bonTasaEstado.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid = em.getReference(bonTasaid.getClass(), bonTasaid.getId());
+                bonTasaEstado.setBonTasaid(bonTasaid);
+            }
             em.persist(bonTasaEstado);
+            if (bonTasaid != null) {
+                bonTasaid.getBonTasaEstadoCollection().add(bonTasaEstado);
+                bonTasaid = em.merge(bonTasaid);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findBonTasaEstado(bonTasaEstado.getId()) != null) {
@@ -54,7 +67,22 @@ public class BonTasaEstadoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            BonTasaEstado persistentBonTasaEstado = em.find(BonTasaEstado.class, bonTasaEstado.getId());
+            BonTasa bonTasaidOld = persistentBonTasaEstado.getBonTasaid();
+            BonTasa bonTasaidNew = bonTasaEstado.getBonTasaid();
+            if (bonTasaidNew != null) {
+                bonTasaidNew = em.getReference(bonTasaidNew.getClass(), bonTasaidNew.getId());
+                bonTasaEstado.setBonTasaid(bonTasaidNew);
+            }
             bonTasaEstado = em.merge(bonTasaEstado);
+            if (bonTasaidOld != null && !bonTasaidOld.equals(bonTasaidNew)) {
+                bonTasaidOld.getBonTasaEstadoCollection().remove(bonTasaEstado);
+                bonTasaidOld = em.merge(bonTasaidOld);
+            }
+            if (bonTasaidNew != null && !bonTasaidNew.equals(bonTasaidOld)) {
+                bonTasaidNew.getBonTasaEstadoCollection().add(bonTasaEstado);
+                bonTasaidNew = em.merge(bonTasaidNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -83,6 +111,11 @@ public class BonTasaEstadoJpaController implements Serializable {
                 bonTasaEstado.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The bonTasaEstado with id " + id + " no longer exists.", enfe);
+            }
+            BonTasa bonTasaid = bonTasaEstado.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid.getBonTasaEstadoCollection().remove(bonTasaEstado);
+                bonTasaid = em.merge(bonTasaid);
             }
             em.remove(bonTasaEstado);
             em.getTransaction().commit();
@@ -133,5 +166,23 @@ public class BonTasaEstadoJpaController implements Serializable {
             em.close();
         }
     }
-    
+   public void insertar(String string) throws SQLException {
+        EntityManager em = getEntityManager();
+
+
+        try {
+            // Query q = em.createNativeQuery(string);
+            String url = "jdbc:sqlserver://SRV-SII\\SQL_SII:0;databaseName=MIGRA4_CRED_FTYC"; 
+            
+            Connection conn = DriverManager.getConnection(url,"admin","1234567");
+            conn.createStatement().execute("SET IDENTITY_INSERT Linea ON");
+            conn.createStatement().execute(string);
+            conn.createStatement().execute("SET IDENTITY_INSERT Linea OFF");
+
+           
+            
+        } finally {
+            em.close();
+        }
+    } 
 }

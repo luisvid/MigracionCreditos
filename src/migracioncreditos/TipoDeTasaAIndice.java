@@ -48,6 +48,7 @@ public class TipoDeTasaAIndice {
             } else {
                 indice.setTipo("2");
             }
+            
             indiceJpa.insertar("INSERT INTO Indice (id, tipo, nombre) VALUES ( "+indice.getId()+", "+indice.getTipo()+", '"+indice.getNombre()+"')");
            // System.out.println("INSERT INTO Indice (id, tipo, nombre) VALUES ( "+indice.getId()+", "+indice.getTipo()+", '"+indice.getNombre()+"')");
             //indiceJpa.persist(indice);

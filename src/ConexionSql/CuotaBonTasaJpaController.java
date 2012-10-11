@@ -14,10 +14,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import Entidades.BonTasa;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 public class CuotaBonTasaJpaController implements Serializable {
 
@@ -35,7 +36,16 @@ public class CuotaBonTasaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            BonTasa bonTasaid = cuotaBonTasa.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid = em.getReference(bonTasaid.getClass(), bonTasaid.getId());
+                cuotaBonTasa.setBonTasaid(bonTasaid);
+            }
             em.persist(cuotaBonTasa);
+            if (bonTasaid != null) {
+                bonTasaid.getCuotaBonTasaCollection().add(cuotaBonTasa);
+                bonTasaid = em.merge(bonTasaid);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findCuotaBonTasa(cuotaBonTasa.getId()) != null) {
@@ -54,7 +64,22 @@ public class CuotaBonTasaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            CuotaBonTasa persistentCuotaBonTasa = em.find(CuotaBonTasa.class, cuotaBonTasa.getId());
+            BonTasa bonTasaidOld = persistentCuotaBonTasa.getBonTasaid();
+            BonTasa bonTasaidNew = cuotaBonTasa.getBonTasaid();
+            if (bonTasaidNew != null) {
+                bonTasaidNew = em.getReference(bonTasaidNew.getClass(), bonTasaidNew.getId());
+                cuotaBonTasa.setBonTasaid(bonTasaidNew);
+            }
             cuotaBonTasa = em.merge(cuotaBonTasa);
+            if (bonTasaidOld != null && !bonTasaidOld.equals(bonTasaidNew)) {
+                bonTasaidOld.getCuotaBonTasaCollection().remove(cuotaBonTasa);
+                bonTasaidOld = em.merge(bonTasaidOld);
+            }
+            if (bonTasaidNew != null && !bonTasaidNew.equals(bonTasaidOld)) {
+                bonTasaidNew.getCuotaBonTasaCollection().add(cuotaBonTasa);
+                bonTasaidNew = em.merge(bonTasaidNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -83,6 +108,11 @@ public class CuotaBonTasaJpaController implements Serializable {
                 cuotaBonTasa.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The cuotaBonTasa with id " + id + " no longer exists.", enfe);
+            }
+            BonTasa bonTasaid = cuotaBonTasa.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid.getCuotaBonTasaCollection().remove(cuotaBonTasa);
+                bonTasaid = em.merge(bonTasaid);
             }
             em.remove(cuotaBonTasa);
             em.getTransaction().commit();

@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 @Entity
 @Table(name = "BonTasaEstado")
@@ -45,6 +47,9 @@ public class BonTasaEstado implements Serializable {
     private Date fechaCambio;
     @Column(name = "tipoEstadoBonTasa")
     private String tipoEstadoBonTasa;
+    @JoinColumn(name = "bonTasa_id", referencedColumnName = "id")
+    @ManyToOne
+    private BonTasa bonTasaid;
 
     public BonTasaEstado() {
     }
@@ -83,6 +88,14 @@ public class BonTasaEstado implements Serializable {
 
     public void setTipoEstadoBonTasa(String tipoEstadoBonTasa) {
         this.tipoEstadoBonTasa = tipoEstadoBonTasa;
+    }
+
+    public BonTasa getBonTasaid() {
+        return bonTasaid;
+    }
+
+    public void setBonTasaid(BonTasa bonTasaid) {
+        this.bonTasaid = bonTasaid;
     }
 
     @Override

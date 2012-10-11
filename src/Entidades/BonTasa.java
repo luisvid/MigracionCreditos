@@ -7,21 +7,27 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 @Entity
 @Table(name = "BonTasa")
@@ -55,19 +61,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "BonTasa.findByPrimerVencInteres", query = "SELECT b FROM BonTasa b WHERE b.primerVencInteres = :primerVencInteres"),
     @NamedQuery(name = "BonTasa.findByQqCosechados", query = "SELECT b FROM BonTasa b WHERE b.qqCosechados = :qqCosechados"),
     @NamedQuery(name = "BonTasa.findByResolucion", query = "SELECT b FROM BonTasa b WHERE b.resolucion = :resolucion"),
-    @NamedQuery(name = "BonTasa.findByTasaBonificada", query = "SELECT b FROM BonTasa b WHERE b.tasaBonificada = :tasaBonificada"),
     @NamedQuery(name = "BonTasa.findByTipoAmortizacion", query = "SELECT b FROM BonTasa b WHERE b.tipoAmortizacion = :tipoAmortizacion"),
     @NamedQuery(name = "BonTasa.findByTipoEmpresa", query = "SELECT b FROM BonTasa b WHERE b.tipoEmpresa = :tipoEmpresa"),
     @NamedQuery(name = "BonTasa.findByTipoEstadoBonTasa", query = "SELECT b FROM BonTasa b WHERE b.tipoEstadoBonTasa = :tipoEstadoBonTasa"),
     @NamedQuery(name = "BonTasa.findByVencimiento", query = "SELECT b FROM BonTasa b WHERE b.vencimiento = :vencimiento"),
     @NamedQuery(name = "BonTasa.findByVolumenVtaAnual", query = "SELECT b FROM BonTasa b WHERE b.volumenVtaAnual = :volumenVtaAnual"),
-    @NamedQuery(name = "BonTasa.findByBancoCODIBA", query = "SELECT b FROM BonTasa b WHERE b.bancoCODIBA = :bancoCODIBA"),
     @NamedQuery(name = "BonTasa.findByMonedaIDMONEDA", query = "SELECT b FROM BonTasa b WHERE b.monedaIDMONEDA = :monedaIDMONEDA"),
     @NamedQuery(name = "BonTasa.findByUnidadId", query = "SELECT b FROM BonTasa b WHERE b.unidadId = :unidadId"),
-    @NamedQuery(name = "BonTasa.findByContar", query = "SELECT b FROM BonTasa b WHERE b.contar = :contar"),
-    @NamedQuery(name = "BonTasa.findByCorrer", query = "SELECT b FROM BonTasa b WHERE b.correr = :correr"),
-    @NamedQuery(name = "BonTasa.findByCalculoBancoBice", query = "SELECT b FROM BonTasa b WHERE b.calculoBancoBice = :calculoBancoBice"),
-    @NamedQuery(name = "BonTasa.findByOperatoria", query = "SELECT b FROM BonTasa b WHERE b.operatoria = :operatoria")})
+    @NamedQuery(name = "BonTasa.findByBancoCODIBA", query = "SELECT b FROM BonTasa b WHERE b.bancoCODIBA = :bancoCODIBA")})
 public class BonTasa implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -81,6 +82,9 @@ public class BonTasa implements Serializable {
     private String certifNormas;
     @Column(name = "condicionamientos")
     private String condicionamientos;
+    @Lob
+    @Column(name = "ente")
+    private byte[] ente;
     @Column(name = "expediente")
     private String expediente;
     @Column(name = "facturacionMercExterno")
@@ -135,8 +139,6 @@ public class BonTasa implements Serializable {
     private Double qqCosechados;
     @Column(name = "resolucion")
     private String resolucion;
-    @Column(name = "tasaBonificada")
-    private Double tasaBonificada;
     @Column(name = "tipoAmortizacion")
     private String tipoAmortizacion;
     @Column(name = "tipoEmpresa")
@@ -148,20 +150,29 @@ public class BonTasa implements Serializable {
     private Date vencimiento;
     @Column(name = "volumenVtaAnual")
     private BigInteger volumenVtaAnual;
-    @Column(name = "banco_CODI_BA")
-    private BigInteger bancoCODIBA;
     @Column(name = "moneda_IDMONEDA")
     private BigInteger monedaIDMONEDA;
     @Column(name = "unidad_id")
     private BigInteger unidadId;
-    @Column(name = "contar")
-    private Integer contar;
-    @Column(name = "correr")
-    private Integer correr;
-    @Column(name = "calculoBancoBice")
-    private Short calculoBancoBice;
-    @Column(name = "operatoria")
-    private String operatoria;
+    @Column(name = "banco_CODI_BA")
+    private BigInteger bancoCODIBA;
+    @OneToMany(mappedBy = "bonTasaid")
+    private Collection<BonTasaEstado> bonTasaEstadoCollection;
+    @OneToMany(mappedBy = "bonTasaid")
+    private Collection<TitularesBonTasa> titularesBonTasaCollection;
+    @JoinColumn(name = "turno_id", referencedColumnName = "id")
+    @ManyToOne
+    private Turno turnoId;
+    @JoinColumn(name = "sector_id", referencedColumnName = "id")
+    @ManyToOne
+    private Sector sectorId;
+    @JoinColumn(name = "persona_IDPERSONA", referencedColumnName = "IDPERSONA")
+    @ManyToOne
+    private Persona personaIDPERSONA;
+    @OneToMany(mappedBy = "bonTasaid")
+    private Collection<BonTasaIndice> bonTasaIndiceCollection;
+    @OneToMany(mappedBy = "bonTasaid")
+    private Collection<CuotaBonTasa> cuotaBonTasaCollection;
 
     public BonTasa() {
     }
@@ -200,6 +211,14 @@ public class BonTasa implements Serializable {
 
     public void setCondicionamientos(String condicionamientos) {
         this.condicionamientos = condicionamientos;
+    }
+
+    public byte[] getEnte() {
+        return ente;
+    }
+
+    public void setEnte(byte[] ente) {
+        this.ente = ente;
     }
 
     public String getExpediente() {
@@ -386,14 +405,6 @@ public class BonTasa implements Serializable {
         this.resolucion = resolucion;
     }
 
-    public Double getTasaBonificada() {
-        return tasaBonificada;
-    }
-
-    public void setTasaBonificada(Double tasaBonificada) {
-        this.tasaBonificada = tasaBonificada;
-    }
-
     public String getTipoAmortizacion() {
         return tipoAmortizacion;
     }
@@ -434,14 +445,6 @@ public class BonTasa implements Serializable {
         this.volumenVtaAnual = volumenVtaAnual;
     }
 
-    public BigInteger getBancoCODIBA() {
-        return bancoCODIBA;
-    }
-
-    public void setBancoCODIBA(BigInteger bancoCODIBA) {
-        this.bancoCODIBA = bancoCODIBA;
-    }
-
     public BigInteger getMonedaIDMONEDA() {
         return monedaIDMONEDA;
     }
@@ -458,36 +461,72 @@ public class BonTasa implements Serializable {
         this.unidadId = unidadId;
     }
 
-    public Integer getContar() {
-        return contar;
+    public BigInteger getBancoCODIBA() {
+        return bancoCODIBA;
     }
 
-    public void setContar(Integer contar) {
-        this.contar = contar;
+    public void setBancoCODIBA(BigInteger bancoCODIBA) {
+        this.bancoCODIBA = bancoCODIBA;
     }
 
-    public Integer getCorrer() {
-        return correr;
+    @XmlTransient
+    public Collection<BonTasaEstado> getBonTasaEstadoCollection() {
+        return bonTasaEstadoCollection;
     }
 
-    public void setCorrer(Integer correr) {
-        this.correr = correr;
+    public void setBonTasaEstadoCollection(Collection<BonTasaEstado> bonTasaEstadoCollection) {
+        this.bonTasaEstadoCollection = bonTasaEstadoCollection;
     }
 
-    public Short getCalculoBancoBice() {
-        return calculoBancoBice;
+    @XmlTransient
+    public Collection<TitularesBonTasa> getTitularesBonTasaCollection() {
+        return titularesBonTasaCollection;
     }
 
-    public void setCalculoBancoBice(Short calculoBancoBice) {
-        this.calculoBancoBice = calculoBancoBice;
+    public void setTitularesBonTasaCollection(Collection<TitularesBonTasa> titularesBonTasaCollection) {
+        this.titularesBonTasaCollection = titularesBonTasaCollection;
     }
 
-    public String getOperatoria() {
-        return operatoria;
+    public Turno getTurnoId() {
+        return turnoId;
     }
 
-    public void setOperatoria(String operatoria) {
-        this.operatoria = operatoria;
+    public void setTurnoId(Turno turnoId) {
+        this.turnoId = turnoId;
+    }
+
+    public Sector getSectorId() {
+        return sectorId;
+    }
+
+    public void setSectorId(Sector sectorId) {
+        this.sectorId = sectorId;
+    }
+
+    public Persona getPersonaIDPERSONA() {
+        return personaIDPERSONA;
+    }
+
+    public void setPersonaIDPERSONA(Persona personaIDPERSONA) {
+        this.personaIDPERSONA = personaIDPERSONA;
+    }
+
+    @XmlTransient
+    public Collection<BonTasaIndice> getBonTasaIndiceCollection() {
+        return bonTasaIndiceCollection;
+    }
+
+    public void setBonTasaIndiceCollection(Collection<BonTasaIndice> bonTasaIndiceCollection) {
+        this.bonTasaIndiceCollection = bonTasaIndiceCollection;
+    }
+
+    @XmlTransient
+    public Collection<CuotaBonTasa> getCuotaBonTasaCollection() {
+        return cuotaBonTasaCollection;
+    }
+
+    public void setCuotaBonTasaCollection(Collection<CuotaBonTasa> cuotaBonTasaCollection) {
+        this.cuotaBonTasaCollection = cuotaBonTasaCollection;
     }
 
     @Override

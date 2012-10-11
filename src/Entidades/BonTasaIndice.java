@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -17,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 @Entity
 @Table(name = "BonTasaIndice")
@@ -38,6 +40,12 @@ public class BonTasaIndice implements Serializable {
     private Integer calculaDias;
     @Column(name = "calculaMes")
     private Integer calculaMes;
+    @JoinColumn(name = "indice_id", referencedColumnName = "id")
+    @ManyToOne
+    private Indice indiceId;
+    @JoinColumn(name = "bonTasa_id", referencedColumnName = "id")
+    @ManyToOne
+    private BonTasa bonTasaid;
 
     public BonTasaIndice() {
     }
@@ -68,6 +76,22 @@ public class BonTasaIndice implements Serializable {
 
     public void setCalculaMes(Integer calculaMes) {
         this.calculaMes = calculaMes;
+    }
+
+    public Indice getIndiceId() {
+        return indiceId;
+    }
+
+    public void setIndiceId(Indice indiceId) {
+        this.indiceId = indiceId;
+    }
+
+    public BonTasa getBonTasaid() {
+        return bonTasaid;
+    }
+
+    public void setBonTasaid(BonTasa bonTasaid) {
+        this.bonTasaid = bonTasaid;
     }
 
     @Override

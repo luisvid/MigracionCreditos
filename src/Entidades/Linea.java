@@ -74,6 +74,46 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Linea.findByCtaContableRecursosMultaId", query = "SELECT l FROM Linea l WHERE l.ctaContableRecursosMultaId = :ctaContableRecursosMultaId"),
     @NamedQuery(name = "Linea.findByCtaContableRecursosPunitorioId", query = "SELECT l FROM Linea l WHERE l.ctaContableRecursosPunitorioId = :ctaContableRecursosPunitorioId")})
 public class Linea implements Serializable {
+    @Column(name = "diasAntesComp")
+    private Integer diasAntesComp;
+    @Column(name = "diasAntesMor")
+    private Integer diasAntesMor;
+    @Column(name = "diasAntesPun")
+    private Integer diasAntesPun;
+    @Column(name = "tipoAmortizacion")
+    private String tipoAmortizacion;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "valorMasComp")
+    private Double valorMasComp;
+    @Column(name = "valorMasMor")
+    private Double valorMasMor;
+    @Column(name = "valorMasPun")
+    private Double valorMasPun;
+    @Column(name = "valorPorComp")
+    private Double valorPorComp;
+    @Column(name = "valorPorMor")
+    private Double valorPorMor;
+    @Column(name = "valorPorPun")
+    private Double valorPorPun;
+    @Column(name = "cantCuotasCapital")
+    private Integer cantCuotasCapital;
+    @Column(name = "cantCuotasInteres")
+    private Integer cantCuotasInteres;
+    @Column(name = "montoObjetoi")
+    private Double montoObjetoi;
+    @Column(name = "periodicidadCapital")
+    private String periodicidadCapital;
+    @Column(name = "periodicidadInteres")
+    private String periodicidadInteres;
+    @JoinColumn(name = "indiceComp_id", referencedColumnName = "id")
+    @ManyToOne
+    private Indice indiceCompid;
+    @JoinColumn(name = "indicePun_id", referencedColumnName = "id")
+    @ManyToOne
+    private Indice indicePunid;
+    @JoinColumn(name = "indiceMor_id", referencedColumnName = "id")
+    @ManyToOne
+    private Indice indiceMorid;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -655,6 +695,150 @@ public class Linea implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Linea[ id=" + id + " ]";
+    }
+
+    public Integer getDiasAntesComp() {
+        return diasAntesComp;
+    }
+
+    public void setDiasAntesComp(Integer diasAntesComp) {
+        this.diasAntesComp = diasAntesComp;
+    }
+
+    public Integer getDiasAntesMor() {
+        return diasAntesMor;
+    }
+
+    public void setDiasAntesMor(Integer diasAntesMor) {
+        this.diasAntesMor = diasAntesMor;
+    }
+
+    public Integer getDiasAntesPun() {
+        return diasAntesPun;
+    }
+
+    public void setDiasAntesPun(Integer diasAntesPun) {
+        this.diasAntesPun = diasAntesPun;
+    }
+
+    public String getTipoAmortizacion() {
+        return tipoAmortizacion;
+    }
+
+    public void setTipoAmortizacion(String tipoAmortizacion) {
+        this.tipoAmortizacion = tipoAmortizacion;
+    }
+
+    public Double getValorMasComp() {
+        return valorMasComp;
+    }
+
+    public void setValorMasComp(Double valorMasComp) {
+        this.valorMasComp = valorMasComp;
+    }
+
+    public Double getValorMasMor() {
+        return valorMasMor;
+    }
+
+    public void setValorMasMor(Double valorMasMor) {
+        this.valorMasMor = valorMasMor;
+    }
+
+    public Double getValorMasPun() {
+        return valorMasPun;
+    }
+
+    public void setValorMasPun(Double valorMasPun) {
+        this.valorMasPun = valorMasPun;
+    }
+
+    public Double getValorPorComp() {
+        return valorPorComp;
+    }
+
+    public void setValorPorComp(Double valorPorComp) {
+        this.valorPorComp = valorPorComp;
+    }
+
+    public Double getValorPorMor() {
+        return valorPorMor;
+    }
+
+    public void setValorPorMor(Double valorPorMor) {
+        this.valorPorMor = valorPorMor;
+    }
+
+    public Double getValorPorPun() {
+        return valorPorPun;
+    }
+
+    public void setValorPorPun(Double valorPorPun) {
+        this.valorPorPun = valorPorPun;
+    }
+
+    public Integer getCantCuotasCapital() {
+        return cantCuotasCapital;
+    }
+
+    public void setCantCuotasCapital(Integer cantCuotasCapital) {
+        this.cantCuotasCapital = cantCuotasCapital;
+    }
+
+    public Integer getCantCuotasInteres() {
+        return cantCuotasInteres;
+    }
+
+    public void setCantCuotasInteres(Integer cantCuotasInteres) {
+        this.cantCuotasInteres = cantCuotasInteres;
+    }
+
+    public Double getMontoObjetoi() {
+        return montoObjetoi;
+    }
+
+    public void setMontoObjetoi(Double montoObjetoi) {
+        this.montoObjetoi = montoObjetoi;
+    }
+
+    public String getPeriodicidadCapital() {
+        return periodicidadCapital;
+    }
+
+    public void setPeriodicidadCapital(String periodicidadCapital) {
+        this.periodicidadCapital = periodicidadCapital;
+    }
+
+    public String getPeriodicidadInteres() {
+        return periodicidadInteres;
+    }
+
+    public void setPeriodicidadInteres(String periodicidadInteres) {
+        this.periodicidadInteres = periodicidadInteres;
+    }
+
+    public Indice getIndiceCompid() {
+        return indiceCompid;
+    }
+
+    public void setIndiceCompid(Indice indiceCompid) {
+        this.indiceCompid = indiceCompid;
+    }
+
+    public Indice getIndicePunid() {
+        return indicePunid;
+    }
+
+    public void setIndicePunid(Indice indicePunid) {
+        this.indicePunid = indicePunid;
+    }
+
+    public Indice getIndiceMorid() {
+        return indiceMorid;
+    }
+
+    public void setIndiceMorid(Indice indiceMorid) {
+        this.indiceMorid = indiceMorid;
     }
     
 }

@@ -215,10 +215,11 @@ public class ObjetoiIndiceJpaController implements Serializable {
 
         try {
             // Query q = em.createNativeQuery(string);
-            String url = "jdbc:sqlserver://SRV-SII\\SQL_SII:0;databaseName=MIGRA3_CRED_FTYC"; 
+            String url = "jdbc:sqlserver://SRV-SII\\SQL_SII:0;databaseName=MIGRA4_CRED_FTYC"; 
             
             Connection conn = DriverManager.getConnection(url,"admin","1234567");
-            boolean statement =conn.createStatement().execute(string);
+            conn.createStatement().execute("SET IDENTITY_INSERT Linea ON");             
+            conn.createStatement().execute(string);             conn.createStatement().execute("SET IDENTITY_INSERT Linea OFF"); 
            
             
         } finally {

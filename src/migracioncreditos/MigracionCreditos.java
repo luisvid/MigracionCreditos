@@ -19,14 +19,14 @@ public class MigracionCreditos {
         // TODO code application logic here
         
 //        System.out.println(" --- INDICES  ---");
-//         TipoDeTasaAIndice tipoAIndice = new TipoDeTasaAIndice();
-//         tipoAIndice.migrarTipoDeTasaAIndice();
-//         
-//         ValoresDeTasaAIndiceValor valoresTasa = new ValoresDeTasaAIndiceValor();
-//         valoresTasa.migrarValoresTasaAIndiceValor();
-//         
-//         ValoresDeTasaAIndiceValor ti = new ValoresDeTasaAIndiceValor();
-//         ti.migrarValoresTasaAIndiceValor();
+//        TipoDeTasaAIndice tipoAIndice = new TipoDeTasaAIndice();
+//        tipoAIndice.migrarTipoDeTasaAIndice();
+//
+//        ValoresDeTasaAIndiceValor valoresTasa = new ValoresDeTasaAIndiceValor();
+//        valoresTasa.migrarValoresTasaAIndiceValor();
+//
+//        ValoresDeTasaAIndiceValor ti = new ValoresDeTasaAIndiceValor();
+//        ti.migrarValoresTasaAIndiceValor();
 //
 //        System.out.println(" --- PERSONAS ---");
 //        APersonas personas = new APersonas(); 
@@ -53,8 +53,8 @@ public class MigracionCreditos {
         cuota.migrarACuota();
 
         System.out.println(" --- CUOTAS COMP ---");
-        CuotaCompensatorioACuota compensatorioACuota = new
-        CuotaCompensatorioACuota(); compensatorioACuota.migrarCCACuota();
+        CuotaCompensatorioACuota compensatorioACuota = new CuotaCompensatorioACuota(); 
+        compensatorioACuota.migrarCCACuota();
 
         System.out.println(" --- CTA CTE CUOTAS ---");
         CuotaCapitalACtaCte cuotaCtaCte = new CuotaCapitalACtaCte();

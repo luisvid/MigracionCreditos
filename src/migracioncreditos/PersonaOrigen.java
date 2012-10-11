@@ -59,12 +59,12 @@ public class PersonaOrigen {
 
                     if (!nombre.contains("A COMPLETAR") && (!idTitular.equals("0") && nombre.equals("NULL"))) {
                         String dni = obj.getString("NroDocumento").replace(".", "");
-                        //  perJpa.insertar("INSERT INTO [MIGRA3_CRED_FTYC].[dbo].[PersonaRev]([IDPERSONA],[NUDO_12],[CUIL_12],"
+                        //  perJpa.insertar("INSERT INTO [MIGRA4_CRED_FTYC].[dbo].[PersonaRev]([IDPERSONA],[NUDO_12],[CUIL_12],"
                         //        + "[IDORIGEN],[ORIGEN])VALUES("+ idTitular +",'"+dni.replace("_","")+"','" + cuit +"','"+ idTitular +"','"+"ORIGEN" + "')");
 
-                        //perJpa.insertar("UPDATE [MIGRA3_CRED_FTYC].[dbo].[PersonaRev] SET [NOM_12] = <NOM_12, varchar(255),>
+                        //perJpa.insertar("UPDATE [MIGRA4_CRED_FTYC].[dbo].[PersonaRev] SET [NOM_12] = <NOM_12, varchar(255),>
 
-                        System.out.println("INSERT INTO [MIGRA3_CRED_FTYC].[dbo].[PersonaRev]([IDPERSONA],[NUDO_12],[CUIL_12],"
+                        System.out.println("INSERT INTO [MIGRA4_CRED_FTYC].[dbo].[PersonaRev]([IDPERSONA],[NUDO_12],[CUIL_12],"
                                 + "[IDORIGEN],[ORIGEN])VALUES(" + idTitular + ",'" + dni.replace("_", "") + "','" + cuit + "','" + idTitular + "','" + "ORIGEN" + "')");
                     } else if (nombre.contains("A COMPLETAR")) {
 //                        System.out.println(idTitular + " " + "Este idTitular es A COMPLETAR");

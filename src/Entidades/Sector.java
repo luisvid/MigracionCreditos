@@ -31,6 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sector.findByDetalle", query = "SELECT s FROM Sector s WHERE s.detalle = :detalle"),
     @NamedQuery(name = "Sector.findByNombre", query = "SELECT s FROM Sector s WHERE s.nombre = :nombre")})
 public class Sector implements Serializable {
+    @OneToMany(mappedBy = "sectorId")
+    private Collection<BonTasa> bonTasaCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -107,6 +109,15 @@ public class Sector implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Sector[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<BonTasa> getBonTasaCollection() {
+        return bonTasaCollection;
+    }
+
+    public void setBonTasaCollection(Collection<BonTasa> bonTasaCollection) {
+        this.bonTasaCollection = bonTasaCollection;
     }
     
 }

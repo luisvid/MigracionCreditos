@@ -14,10 +14,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import Entidades.BonTasa;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 public class TitularesBonTasaJpaController implements Serializable {
 
@@ -35,7 +36,16 @@ public class TitularesBonTasaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            BonTasa bonTasaid = titularesBonTasa.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid = em.getReference(bonTasaid.getClass(), bonTasaid.getId());
+                titularesBonTasa.setBonTasaid(bonTasaid);
+            }
             em.persist(titularesBonTasa);
+            if (bonTasaid != null) {
+                bonTasaid.getTitularesBonTasaCollection().add(titularesBonTasa);
+                bonTasaid = em.merge(bonTasaid);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findTitularesBonTasa(titularesBonTasa.getId()) != null) {
@@ -54,7 +64,22 @@ public class TitularesBonTasaJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            TitularesBonTasa persistentTitularesBonTasa = em.find(TitularesBonTasa.class, titularesBonTasa.getId());
+            BonTasa bonTasaidOld = persistentTitularesBonTasa.getBonTasaid();
+            BonTasa bonTasaidNew = titularesBonTasa.getBonTasaid();
+            if (bonTasaidNew != null) {
+                bonTasaidNew = em.getReference(bonTasaidNew.getClass(), bonTasaidNew.getId());
+                titularesBonTasa.setBonTasaid(bonTasaidNew);
+            }
             titularesBonTasa = em.merge(titularesBonTasa);
+            if (bonTasaidOld != null && !bonTasaidOld.equals(bonTasaidNew)) {
+                bonTasaidOld.getTitularesBonTasaCollection().remove(titularesBonTasa);
+                bonTasaidOld = em.merge(bonTasaidOld);
+            }
+            if (bonTasaidNew != null && !bonTasaidNew.equals(bonTasaidOld)) {
+                bonTasaidNew.getTitularesBonTasaCollection().add(titularesBonTasa);
+                bonTasaidNew = em.merge(bonTasaidNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -83,6 +108,11 @@ public class TitularesBonTasaJpaController implements Serializable {
                 titularesBonTasa.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The titularesBonTasa with id " + id + " no longer exists.", enfe);
+            }
+            BonTasa bonTasaid = titularesBonTasa.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid.getTitularesBonTasaCollection().remove(titularesBonTasa);
+                bonTasaid = em.merge(bonTasaid);
             }
             em.remove(titularesBonTasa);
             em.getTransaction().commit();

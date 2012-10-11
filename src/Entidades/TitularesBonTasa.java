@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -17,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 @Entity
 @Table(name = "TitularesBonTasa")
@@ -32,6 +34,12 @@ public class TitularesBonTasa implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private BigDecimal id;
+    @JoinColumn(name = "persona_IDPERSONA", referencedColumnName = "IDPERSONA")
+    @ManyToOne
+    private Persona personaIDPERSONA;
+    @JoinColumn(name = "bonTasa_id", referencedColumnName = "id")
+    @ManyToOne
+    private BonTasa bonTasaid;
 
     public TitularesBonTasa() {
     }
@@ -46,6 +54,22 @@ public class TitularesBonTasa implements Serializable {
 
     public void setId(BigDecimal id) {
         this.id = id;
+    }
+
+    public Persona getPersonaIDPERSONA() {
+        return personaIDPERSONA;
+    }
+
+    public void setPersonaIDPERSONA(Persona personaIDPERSONA) {
+        this.personaIDPERSONA = personaIDPERSONA;
+    }
+
+    public BonTasa getBonTasaid() {
+        return bonTasaid;
+    }
+
+    public void setBonTasaid(BonTasa bonTasaid) {
+        this.bonTasaid = bonTasaid;
     }
 
     @Override

@@ -212,7 +212,7 @@ public class SubTipoLineaJpaController implements Serializable {
 
         try {
             // Query q = em.createNativeQuery(string);
-            String url = "jdbc:sqlserver://SRV-SII\\SQL_SII:0;databaseName=MIGRA3_CRED_FTYC";
+            String url = "jdbc:sqlserver://SRV-SII\\SQL_SII:0;databaseName=MIGRA4_CRED_FTYC";
 
             Connection conn = DriverManager.getConnection(url, "admin", "1234567");
             conn.createStatement().execute("SET IDENTITY_INSERT SubTipoLinea ON");

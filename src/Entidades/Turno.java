@@ -47,20 +47,22 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Turno.findByTipoConsulta", query = "SELECT t FROM Turno t WHERE t.tipoConsulta = :tipoConsulta"),
     @NamedQuery(name = "Turno.findByUnidadId", query = "SELECT t FROM Turno t WHERE t.unidadId = :unidadId")})
 public class Turno implements Serializable {
+    @Column(name =     "atencion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date atencion;
+    @Column(name =     "llegada")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date llegada;
+    @OneToMany(mappedBy = "turnoId")
+    private Collection<BonTasa> bonTasaCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "id")
     private BigDecimal id;
-    @Column(name = "atencion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date atencion;
     @Column(name = "estado")
     private String estado;
-    @Column(name = "llegada")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date llegada;
     @Column(name = "mail")
     private String mail;
     @Column(name = "monto")
@@ -100,28 +102,12 @@ public class Turno implements Serializable {
         this.id = id;
     }
 
-    public Date getAtencion() {
-        return atencion;
-    }
-
-    public void setAtencion(Date atencion) {
-        this.atencion = atencion;
-    }
-
     public String getEstado() {
         return estado;
     }
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public Date getLlegada() {
-        return llegada;
-    }
-
-    public void setLlegada(Date llegada) {
-        this.llegada = llegada;
     }
 
     public String getMail() {
@@ -236,6 +222,31 @@ public class Turno implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Turno[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<BonTasa> getBonTasaCollection() {
+        return bonTasaCollection;
+    }
+
+    public void setBonTasaCollection(Collection<BonTasa> bonTasaCollection) {
+        this.bonTasaCollection = bonTasaCollection;
+    }
+
+    public Date getAtencion() {
+        return atencion;
+    }
+
+    public void setAtencion(Date atencion) {
+        this.atencion = atencion;
+    }
+
+    public Date getLlegada() {
+        return llegada;
+    }
+
+    public void setLlegada(Date llegada) {
+        this.llegada = llegada;
     }
     
 }

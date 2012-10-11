@@ -83,7 +83,7 @@
     <properties>
       <property name="toplink.jdbc.user" value="admin"/>
       <property name="toplink.jdbc.password" value="1234567"/>
-      <property name="toplink.jdbc.url" value="jdbc:sqlserver://SRV-SII\SQL_SII:0;databaseName=MIGRA3_CRED_FTYC"/>
+      <property name="toplink.jdbc.url" value="jdbc:sqlserver://SRV-SII\SQL_SII:0;databaseName=MIGRA2_CRED_FTYC"/>
       <property name="toplink.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
     </properties>
   </persistence-unit>

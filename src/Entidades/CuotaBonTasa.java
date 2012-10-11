@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -20,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 @Entity
 @Table(name = "CuotaBonTasa")
@@ -30,18 +32,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "CuotaBonTasa.findById", query = "SELECT c FROM CuotaBonTasa c WHERE c.id = :id"),
     @NamedQuery(name = "CuotaBonTasa.findByCapital", query = "SELECT c FROM CuotaBonTasa c WHERE c.capital = :capital"),
     @NamedQuery(name = "CuotaBonTasa.findByCompensatorio", query = "SELECT c FROM CuotaBonTasa c WHERE c.compensatorio = :compensatorio"),
-    @NamedQuery(name = "CuotaBonTasa.findByFechaPago", query = "SELECT c FROM CuotaBonTasa c WHERE c.fechaPago = :fechaPago"),
-    @NamedQuery(name = "CuotaBonTasa.findByFechaSolPago", query = "SELECT c FROM CuotaBonTasa c WHERE c.fechaSolPago = :fechaSolPago"),
     @NamedQuery(name = "CuotaBonTasa.findByFechaVencimiento", query = "SELECT c FROM CuotaBonTasa c WHERE c.fechaVencimiento = :fechaVencimiento"),
     @NamedQuery(name = "CuotaBonTasa.findByMoratorio", query = "SELECT c FROM CuotaBonTasa c WHERE c.moratorio = :moratorio"),
-    @NamedQuery(name = "CuotaBonTasa.findByNroOrdenPago", query = "SELECT c FROM CuotaBonTasa c WHERE c.nroOrdenPago = :nroOrdenPago"),
     @NamedQuery(name = "CuotaBonTasa.findByNumero", query = "SELECT c FROM CuotaBonTasa c WHERE c.numero = :numero"),
     @NamedQuery(name = "CuotaBonTasa.findByPunitorio", query = "SELECT c FROM CuotaBonTasa c WHERE c.punitorio = :punitorio"),
     @NamedQuery(name = "CuotaBonTasa.findByTasaCompensatorio", query = "SELECT c FROM CuotaBonTasa c WHERE c.tasaCompensatorio = :tasaCompensatorio"),
     @NamedQuery(name = "CuotaBonTasa.findByTasaMoratorio", query = "SELECT c FROM CuotaBonTasa c WHERE c.tasaMoratorio = :tasaMoratorio"),
     @NamedQuery(name = "CuotaBonTasa.findByTasaPunitorio", query = "SELECT c FROM CuotaBonTasa c WHERE c.tasaPunitorio = :tasaPunitorio"),
-    @NamedQuery(name = "CuotaBonTasa.findByTipoEstadoBonCuota", query = "SELECT c FROM CuotaBonTasa c WHERE c.tipoEstadoBonCuota = :tipoEstadoBonCuota"),
-    @NamedQuery(name = "CuotaBonTasa.findBySubsidio", query = "SELECT c FROM CuotaBonTasa c WHERE c.subsidio = :subsidio")})
+    @NamedQuery(name = "CuotaBonTasa.findByTipoEstadoBonCuota", query = "SELECT c FROM CuotaBonTasa c WHERE c.tipoEstadoBonCuota = :tipoEstadoBonCuota")})
 public class CuotaBonTasa implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -53,19 +51,11 @@ public class CuotaBonTasa implements Serializable {
     private Double capital;
     @Column(name = "compensatorio")
     private Double compensatorio;
-    @Column(name = "fechaPago")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaPago;
-    @Column(name = "fechaSolPago")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaSolPago;
     @Column(name = "fechaVencimiento")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaVencimiento;
     @Column(name = "moratorio")
     private Double moratorio;
-    @Column(name = "nroOrdenPago")
-    private Integer nroOrdenPago;
     @Column(name = "numero")
     private Integer numero;
     @Column(name = "punitorio")
@@ -78,8 +68,9 @@ public class CuotaBonTasa implements Serializable {
     private Double tasaPunitorio;
     @Column(name = "tipoEstadoBonCuota")
     private String tipoEstadoBonCuota;
-    @Column(name = "subsidio")
-    private Double subsidio;
+    @JoinColumn(name = "bonTasa_id", referencedColumnName = "id")
+    @ManyToOne
+    private BonTasa bonTasaid;
 
     public CuotaBonTasa() {
     }
@@ -112,22 +103,6 @@ public class CuotaBonTasa implements Serializable {
         this.compensatorio = compensatorio;
     }
 
-    public Date getFechaPago() {
-        return fechaPago;
-    }
-
-    public void setFechaPago(Date fechaPago) {
-        this.fechaPago = fechaPago;
-    }
-
-    public Date getFechaSolPago() {
-        return fechaSolPago;
-    }
-
-    public void setFechaSolPago(Date fechaSolPago) {
-        this.fechaSolPago = fechaSolPago;
-    }
-
     public Date getFechaVencimiento() {
         return fechaVencimiento;
     }
@@ -142,14 +117,6 @@ public class CuotaBonTasa implements Serializable {
 
     public void setMoratorio(Double moratorio) {
         this.moratorio = moratorio;
-    }
-
-    public Integer getNroOrdenPago() {
-        return nroOrdenPago;
-    }
-
-    public void setNroOrdenPago(Integer nroOrdenPago) {
-        this.nroOrdenPago = nroOrdenPago;
     }
 
     public Integer getNumero() {
@@ -200,12 +167,12 @@ public class CuotaBonTasa implements Serializable {
         this.tipoEstadoBonCuota = tipoEstadoBonCuota;
     }
 
-    public Double getSubsidio() {
-        return subsidio;
+    public BonTasa getBonTasaid() {
+        return bonTasaid;
     }
 
-    public void setSubsidio(Double subsidio) {
-        this.subsidio = subsidio;
+    public void setBonTasaid(BonTasa bonTasaid) {
+        this.bonTasaid = bonTasaid;
     }
 
     @Override

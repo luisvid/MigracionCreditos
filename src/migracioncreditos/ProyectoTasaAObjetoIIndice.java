@@ -50,7 +50,7 @@ public class ProyectoTasaAObjetoIIndice {
             //idProyecto.setNumeroCredito(strIdProyecto);
 
             List<Objetoi> obi = objetoiJpa.findByCredito(strIdProyecto);
-//Seteo los datos al objeto que va a llevar lo relacionado a los datos Compensatorios
+            //Seteo los datos al objeto que va a llevar lo relacionado a los datos Compensatorios
             for (Iterator<Objetoi> it = obi.iterator(); it.hasNext();) {
                 Objetoi objetoi = it.next();
 

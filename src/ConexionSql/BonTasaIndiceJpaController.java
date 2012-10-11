@@ -14,10 +14,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import Entidades.Indice;
+import Entidades.BonTasa;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
- * @author luisv
+ * @author analian
  */
 public class BonTasaIndiceJpaController implements Serializable {
 
@@ -35,7 +40,25 @@ public class BonTasaIndiceJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Indice indiceId = bonTasaIndice.getIndiceId();
+            if (indiceId != null) {
+                indiceId = em.getReference(indiceId.getClass(), indiceId.getId());
+                bonTasaIndice.setIndiceId(indiceId);
+            }
+            BonTasa bonTasaid = bonTasaIndice.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid = em.getReference(bonTasaid.getClass(), bonTasaid.getId());
+                bonTasaIndice.setBonTasaid(bonTasaid);
+            }
             em.persist(bonTasaIndice);
+            if (indiceId != null) {
+                indiceId.getBonTasaIndiceCollection().add(bonTasaIndice);
+                indiceId = em.merge(indiceId);
+            }
+            if (bonTasaid != null) {
+                bonTasaid.getBonTasaIndiceCollection().add(bonTasaIndice);
+                bonTasaid = em.merge(bonTasaid);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             if (findBonTasaIndice(bonTasaIndice.getId()) != null) {
@@ -54,7 +77,36 @@ public class BonTasaIndiceJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            BonTasaIndice persistentBonTasaIndice = em.find(BonTasaIndice.class, bonTasaIndice.getId());
+            Indice indiceIdOld = persistentBonTasaIndice.getIndiceId();
+            Indice indiceIdNew = bonTasaIndice.getIndiceId();
+            BonTasa bonTasaidOld = persistentBonTasaIndice.getBonTasaid();
+            BonTasa bonTasaidNew = bonTasaIndice.getBonTasaid();
+            if (indiceIdNew != null) {
+                indiceIdNew = em.getReference(indiceIdNew.getClass(), indiceIdNew.getId());
+                bonTasaIndice.setIndiceId(indiceIdNew);
+            }
+            if (bonTasaidNew != null) {
+                bonTasaidNew = em.getReference(bonTasaidNew.getClass(), bonTasaidNew.getId());
+                bonTasaIndice.setBonTasaid(bonTasaidNew);
+            }
             bonTasaIndice = em.merge(bonTasaIndice);
+            if (indiceIdOld != null && !indiceIdOld.equals(indiceIdNew)) {
+                indiceIdOld.getBonTasaIndiceCollection().remove(bonTasaIndice);
+                indiceIdOld = em.merge(indiceIdOld);
+            }
+            if (indiceIdNew != null && !indiceIdNew.equals(indiceIdOld)) {
+                indiceIdNew.getBonTasaIndiceCollection().add(bonTasaIndice);
+                indiceIdNew = em.merge(indiceIdNew);
+            }
+            if (bonTasaidOld != null && !bonTasaidOld.equals(bonTasaidNew)) {
+                bonTasaidOld.getBonTasaIndiceCollection().remove(bonTasaIndice);
+                bonTasaidOld = em.merge(bonTasaidOld);
+            }
+            if (bonTasaidNew != null && !bonTasaidNew.equals(bonTasaidOld)) {
+                bonTasaidNew.getBonTasaIndiceCollection().add(bonTasaIndice);
+                bonTasaidNew = em.merge(bonTasaidNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
@@ -83,6 +135,16 @@ public class BonTasaIndiceJpaController implements Serializable {
                 bonTasaIndice.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The bonTasaIndice with id " + id + " no longer exists.", enfe);
+            }
+            Indice indiceId = bonTasaIndice.getIndiceId();
+            if (indiceId != null) {
+                indiceId.getBonTasaIndiceCollection().remove(bonTasaIndice);
+                indiceId = em.merge(indiceId);
+            }
+            BonTasa bonTasaid = bonTasaIndice.getBonTasaid();
+            if (bonTasaid != null) {
+                bonTasaid.getBonTasaIndiceCollection().remove(bonTasaIndice);
+                bonTasaid = em.merge(bonTasaid);
             }
             em.remove(bonTasaIndice);
             em.getTransaction().commit();
@@ -133,5 +195,23 @@ public class BonTasaIndiceJpaController implements Serializable {
             em.close();
         }
     }
-    
+   public void insertar(String string) throws SQLException {
+        EntityManager em = getEntityManager();
+
+
+        try {
+            // Query q = em.createNativeQuery(string);
+            String url = "jdbc:sqlserver://SRV-SII\\SQL_SII:0;databaseName=MIGRA4_CRED_FTYC"; 
+            
+            Connection conn = DriverManager.getConnection(url,"admin","1234567");
+            conn.createStatement().execute("SET IDENTITY_INSERT Linea ON");
+            conn.createStatement().execute(string);
+            conn.createStatement().execute("SET IDENTITY_INSERT Linea OFF");
+
+           
+            
+        } finally {
+            em.close();
+        }
+    } 
 }

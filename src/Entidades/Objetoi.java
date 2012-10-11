@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -77,7 +78,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Objetoi.findByDestino", query = "SELECT o FROM Objetoi o WHERE o.destino = :destino"),
     @NamedQuery(name = "Objetoi.findByFechaCosecha", query = "SELECT o FROM Objetoi o WHERE o.fechaCosecha = :fechaCosecha"),
     @NamedQuery(name = "Objetoi.findByFecovita", query = "SELECT o FROM Objetoi o WHERE o.fecovita = :fecovita"),
-    @NamedQuery(name = "Objetoi.findByNumeroAtencionStr", query = "SELECT o FROM Objetoi o WHERE o.numeroAtencionStr = :numeroAtencionStr"),
     @NamedQuery(name = "Objetoi.findByBonificacion", query = "SELECT o FROM Objetoi o WHERE o.bonificacion = :bonificacion"),
     @NamedQuery(name = "Objetoi.findByCantHas", query = "SELECT o FROM Objetoi o WHERE o.cantHas = :cantHas"),
     @NamedQuery(name = "Objetoi.findByNroINV", query = "SELECT o FROM Objetoi o WHERE o.nroINV = :nroINV"),
@@ -85,19 +85,127 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Objetoi.findByQuintalesIngresados", query = "SELECT o FROM Objetoi o WHERE o.quintalesIngresados = :quintalesIngresados"),
     @NamedQuery(name = "Objetoi.findByTipoCultivo", query = "SELECT o FROM Objetoi o WHERE o.tipoCultivo = :tipoCultivo"),
     @NamedQuery(name = "Objetoi.findByCantPersonal", query = "SELECT o FROM Objetoi o WHERE o.cantPersonal = :cantPersonal"),
-    @NamedQuery(name = "Objetoi.findByFechaCalculo", query = "SELECT o FROM Objetoi o WHERE o.fechaCalculo = :fechaCalculo"),
-    @NamedQuery(name = "Objetoi.findByFinanciamientoMaximo", query = "SELECT o FROM Objetoi o WHERE o.financiamientoMaximo = :financiamientoMaximo"),
     @NamedQuery(name = "Objetoi.findByQqsolicitado", query = "SELECT o FROM Objetoi o WHERE o.qqsolicitado = :qqsolicitado"),
     @NamedQuery(name = "Objetoi.findByTipoEmpresa", query = "SELECT o FROM Objetoi o WHERE o.tipoEmpresa = :tipoEmpresa"),
-    @NamedQuery(name = "Objetoi.findByTipoSector", query = "SELECT o FROM Objetoi o WHERE o.tipoSector = :tipoSector"),
     @NamedQuery(name = "Objetoi.findByUltimaCuotaEmitida", query = "SELECT o FROM Objetoi o WHERE o.ultimaCuotaEmitida = :ultimaCuotaEmitida"),
-    @NamedQuery(name = "Objetoi.findByFechaMutuoFin", query = "SELECT o FROM Objetoi o WHERE o.fechaMutuoFin = :fechaMutuoFin"),
-    @NamedQuery(name = "Objetoi.findByFechaResolFin", query = "SELECT o FROM Objetoi o WHERE o.fechaResolFin = :fechaResolFin"),
-    @NamedQuery(name = "Objetoi.findByNroResolFin", query = "SELECT o FROM Objetoi o WHERE o.nroResolFin = :nroResolFin"),
     @NamedQuery(name = "Objetoi.findByFechaFirmaFinalizacion", query = "SELECT o FROM Objetoi o WHERE o.fechaFirmaFinalizacion = :fechaFirmaFinalizacion"),
     @NamedQuery(name = "Objetoi.findByFechaFirmaResolucion", query = "SELECT o FROM Objetoi o WHERE o.fechaFirmaResolucion = :fechaFirmaResolucion"),
     @NamedQuery(name = "Objetoi.findByNumeroResolucion", query = "SELECT o FROM Objetoi o WHERE o.numeroResolucion = :numeroResolucion")})
 public class Objetoi implements Serializable {
+
+    @Column(name =     "cantMateria")
+    private String cantMateria;
+    @Column(name =     "cotizaContrato")
+    private Double cotizaContrato;
+    @Column(name =     "cotizaInicial")
+    private Double cotizaInicial;
+    @Column(name =     "cotizaResol")
+    private Double cotizaResol;
+    @Column(name =     "esMiPyme")
+    private Short esMiPyme;
+    @Column(name =     "fechaAnalisisPatrimonial")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaAnalisisPatrimonial;
+    @Column(name =     "fechaAsesoriaLetrada")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaAsesoriaLetrada;
+    @Column(name =     "fechaCosecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaCosecha;
+    @Column(name =     "fechaExpediente")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaExpediente;
+    @Column(name =     "fechaFirmaContrato")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFirmaContrato;
+    @Column(name =     "fechaFirmaFinalizacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFirmaFinalizacion;
+    @Column(name = "fechaFirmaResolucion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFirmaResolucion;
+    @Column(name = "fechaInhibicion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInhibicion;
+    @Column(name = "fechaMutuo")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaMutuo;
+    @Column(name = "fechaResolucion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaResolucion;
+    @Column(name = "fechaSolicitud")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaSolicitud;
+    @Column(name = "fechaVerificacion")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaVerificacion;
+    @Column(name = "fecovita")
+    private Short fecovita;
+    @Column(name = "financiamientoSol")
+    private Double financiamientoSol;
+    @Column(name = "gastosElaboracion")
+    private String gastosElaboracion;
+    @Column(name = "inicioActividad")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inicioActividad;
+    @Column(name = "observacionAnalisisPatrimonial")
+    private String observacionAnalisisPatrimonial;
+    @Column(name = "observacionAsesoriaLetrada")
+    private String observacionAsesoriaLetrada;
+    @Column(name = "observacionInhibicion")
+    private String observacionInhibicion;
+    @Column(name = "observacionVerificacion")
+    private String observacionVerificacion;
+    @Column(name = "precioMateria")
+    private String precioMateria;
+    @Column(name = "primerVencCapital")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date primerVencCapital;
+    @Column(name = "primerVencInteres")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date primerVencInteres;
+    @Column(name = "qqFinal")
+    private Double qqFinal;
+    @Column(name = "taxiDominio")
+    private String taxiDominio;
+    @Column(name = "taxiMarca")
+    private String taxiMarca;
+    @Column(name = "taxiModelo")
+    private String taxiModelo;
+    @Column(name = "tipoCult")
+    private String tipoCult;
+    @Column(name = "totalBon")
+    private Double totalBon;
+    @Column(name = "valorCartera")
+    private Short valorCartera;
+    @Column(name = "vencimiento")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date vencimiento;
+    @JoinColumn(name = "caducidadPlazo_id", referencedColumnName = "id")
+    @ManyToOne
+    private CaducidadPlazo caducidadPlazoid;
+    @OneToMany(mappedBy = "objetoiId")
+    private Collection<ObservacionObjetoi> observacionObjetoiCollection;
+    @OneToMany(mappedBy = "objetoiId")
+    private Collection<Boleto> boletoCollection;
+    @OneToMany(mappedBy = "creditoId")
+    private Collection<Emideta> emidetaCollection;
+    @OneToMany(mappedBy = "creditoId")
+    private Collection<Certificado> certificadoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "objetoi")
+    private Collection<Ctacte> ctacteCollection;
+    @OneToMany(mappedBy = "creditoId")
+    private Collection<Vinedo> vinedoCollection;
+    @OneToMany(mappedBy = "creditoId")
+    private Collection<ObjetoiEmergencia> objetoiEmergenciaCollection;
+    @OneToMany(mappedBy = "creditoId")
+    private Collection<Cuota> cuotaCollection;
+    @OneToMany(mappedBy = "objetoiId")
+    private Collection<ObjetoiEstado> objetoiEstadoCollection;
+    @OneToMany(mappedBy = "objetoiId")
+    private Collection<ObjetoiComportamiento> objetoiComportamientoCollection;
+    @OneToMany(mappedBy = "objetoiId")
+    private Collection<DomicilioObjetoi> domicilioObjetoiCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -112,27 +220,12 @@ public class Objetoi implements Serializable {
     private Double aportePropio;
     @Column(name = "expediente")
     private String expediente;
-    @Column(name = "fechaExpediente")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaExpediente;
-    @Column(name = "fechaMutuo")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaMutuo;
-    @Column(name = "fechaResolucion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaResolucion;
-    @Column(name = "fechaSolicitud")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaSolicitud;
     @Column(name = "financiamiento")
     private Double financiamiento;
     @Column(name = "frecuenciaCapital")
     private String frecuenciaCapital;
     @Column(name = "frecuenciaInteres")
     private String frecuenciaInteres;
-    @Column(name = "inicioActividad")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date inicioActividad;
     @Column(name = "montoTotal")
     private Double montoTotal;
     @Column(name = "numeroAtencion")
@@ -153,12 +246,6 @@ public class Objetoi implements Serializable {
     private Integer plazoCompensatorio;
     @Column(name = "porcentajeGastosCuota")
     private Double porcentajeGastosCuota;
-    @Column(name = "primerVencCapital")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date primerVencCapital;
-    @Column(name = "primerVencInteres")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date primerVencInteres;
     @Column(name = "nroCatastral")
     private String nroCatastral;
     @Column(name = "nroEstabRural")
@@ -169,9 +256,6 @@ public class Objetoi implements Serializable {
     private String resolucion;
     @Column(name = "tipoAmortizacion")
     private String tipoAmortizacion;
-    @Column(name = "vencimiento")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date vencimiento;
     @Column(name = "volumenVtaAnual")
     private Double volumenVtaAnual;
     @Column(name = "idAgente")
@@ -194,13 +278,6 @@ public class Objetoi implements Serializable {
     private String nombreAuthValores2;
     @Column(name = "destino")
     private String destino;
-    @Column(name = "fechaCosecha")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCosecha;
-    @Column(name = "fecovita")
-    private Integer fecovita;
-    @Column(name = "numeroAtencionStr")
-    private String numeroAtencionStr;
     @Column(name = "bonificacion")
     private Double bonificacion;
     @Column(name = "cantHas")
@@ -215,33 +292,12 @@ public class Objetoi implements Serializable {
     private String tipoCultivo;
     @Column(name = "cantPersonal")
     private Integer cantPersonal;
-    @Column(name = "fechaCalculo")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaCalculo;
-    @Column(name = "financiamientoMaximo")
-    private Double financiamientoMaximo;
     @Column(name = "qqsolicitado")
     private Double qqsolicitado;
     @Column(name = "tipoEmpresa")
     private String tipoEmpresa;
-    @Column(name = "tipoSector")
-    private String tipoSector;
     @Column(name = "ultimaCuotaEmitida")
     private Integer ultimaCuotaEmitida;
-    @Column(name = "fechaMutuoFin")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaMutuoFin;
-    @Column(name = "fechaResolFin")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaResolFin;
-    @Column(name = "nroResolFin")
-    private Integer nroResolFin;
-    @Column(name = "fechaFirmaFinalizacion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFirmaFinalizacion;
-    @Column(name = "fechaFirmaResolucion")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaFirmaResolucion;
     @Column(name = "numeroResolucion")
     private String numeroResolucion;
     @OneToMany(mappedBy = "idCredito")
@@ -318,38 +374,6 @@ public class Objetoi implements Serializable {
         this.expediente = expediente;
     }
 
-    public Date getFechaExpediente() {
-        return fechaExpediente;
-    }
-
-    public void setFechaExpediente(Date fechaExpediente) {
-        this.fechaExpediente = fechaExpediente;
-    }
-
-    public Date getFechaMutuo() {
-        return fechaMutuo;
-    }
-
-    public void setFechaMutuo(Date fechaMutuo) {
-        this.fechaMutuo = fechaMutuo;
-    }
-
-    public Date getFechaResolucion() {
-        return fechaResolucion;
-    }
-
-    public void setFechaResolucion(Date fechaResolucion) {
-        this.fechaResolucion = fechaResolucion;
-    }
-
-    public Date getFechaSolicitud() {
-        return fechaSolicitud;
-    }
-
-    public void setFechaSolicitud(Date fechaSolicitud) {
-        this.fechaSolicitud = fechaSolicitud;
-    }
-
     public Double getFinanciamiento() {
         return financiamiento;
     }
@@ -372,14 +396,6 @@ public class Objetoi implements Serializable {
 
     public void setFrecuenciaInteres(String frecuenciaInteres) {
         this.frecuenciaInteres = frecuenciaInteres;
-    }
-
-    public Date getInicioActividad() {
-        return inicioActividad;
-    }
-
-    public void setInicioActividad(Date inicioActividad) {
-        this.inicioActividad = inicioActividad;
     }
 
     public Double getMontoTotal() {
@@ -462,22 +478,6 @@ public class Objetoi implements Serializable {
         this.porcentajeGastosCuota = porcentajeGastosCuota;
     }
 
-    public Date getPrimerVencCapital() {
-        return primerVencCapital;
-    }
-
-    public void setPrimerVencCapital(Date primerVencCapital) {
-        this.primerVencCapital = primerVencCapital;
-    }
-
-    public Date getPrimerVencInteres() {
-        return primerVencInteres;
-    }
-
-    public void setPrimerVencInteres(Date primerVencInteres) {
-        this.primerVencInteres = primerVencInteres;
-    }
-
     public String getNroCatastral() {
         return nroCatastral;
     }
@@ -516,14 +516,6 @@ public class Objetoi implements Serializable {
 
     public void setTipoAmortizacion(String tipoAmortizacion) {
         this.tipoAmortizacion = tipoAmortizacion;
-    }
-
-    public Date getVencimiento() {
-        return vencimiento;
-    }
-
-    public void setVencimiento(Date vencimiento) {
-        this.vencimiento = vencimiento;
     }
 
     public Double getVolumenVtaAnual() {
@@ -614,30 +606,6 @@ public class Objetoi implements Serializable {
         this.destino = destino;
     }
 
-    public Date getFechaCosecha() {
-        return fechaCosecha;
-    }
-
-    public void setFechaCosecha(Date fechaCosecha) {
-        this.fechaCosecha = fechaCosecha;
-    }
-
-    public Integer getFecovita() {
-        return fecovita;
-    }
-
-    public void setFecovita(Integer fecovita) {
-        this.fecovita = fecovita;
-    }
-
-    public String getNumeroAtencionStr() {
-        return numeroAtencionStr;
-    }
-
-    public void setNumeroAtencionStr(String numeroAtencionStr) {
-        this.numeroAtencionStr = numeroAtencionStr;
-    }
-
     public Double getBonificacion() {
         return bonificacion;
     }
@@ -694,22 +662,6 @@ public class Objetoi implements Serializable {
         this.cantPersonal = cantPersonal;
     }
 
-    public Date getFechaCalculo() {
-        return fechaCalculo;
-    }
-
-    public void setFechaCalculo(Date fechaCalculo) {
-        this.fechaCalculo = fechaCalculo;
-    }
-
-    public Double getFinanciamientoMaximo() {
-        return financiamientoMaximo;
-    }
-
-    public void setFinanciamientoMaximo(Double financiamientoMaximo) {
-        this.financiamientoMaximo = financiamientoMaximo;
-    }
-
     public Double getQqsolicitado() {
         return qqsolicitado;
     }
@@ -726,14 +678,6 @@ public class Objetoi implements Serializable {
         this.tipoEmpresa = tipoEmpresa;
     }
 
-    public String getTipoSector() {
-        return tipoSector;
-    }
-
-    public void setTipoSector(String tipoSector) {
-        this.tipoSector = tipoSector;
-    }
-
     public Integer getUltimaCuotaEmitida() {
         return ultimaCuotaEmitida;
     }
@@ -742,46 +686,7 @@ public class Objetoi implements Serializable {
         this.ultimaCuotaEmitida = ultimaCuotaEmitida;
     }
 
-    public Date getFechaMutuoFin() {
-        return fechaMutuoFin;
-    }
-
-    public void setFechaMutuoFin(Date fechaMutuoFin) {
-        this.fechaMutuoFin = fechaMutuoFin;
-    }
-
-    public Date getFechaResolFin() {
-        return fechaResolFin;
-    }
-
-    public void setFechaResolFin(Date fechaResolFin) {
-        this.fechaResolFin = fechaResolFin;
-    }
-
-    public Integer getNroResolFin() {
-        return nroResolFin;
-    }
-
-    public void setNroResolFin(Integer nroResolFin) {
-        this.nroResolFin = nroResolFin;
-    }
-
-    public Date getFechaFirmaFinalizacion() {
-        return fechaFirmaFinalizacion;
-    }
-
-    public void setFechaFirmaFinalizacion(Date fechaFirmaFinalizacion) {
-        this.fechaFirmaFinalizacion = fechaFirmaFinalizacion;
-    }
-
-    public Date getFechaFirmaResolucion() {
-        return fechaFirmaResolucion;
-    }
-
-    public void setFechaFirmaResolucion(Date fechaFirmaResolucion) {
-        this.fechaFirmaResolucion = fechaFirmaResolucion;
-    }
-
+    
     public String getNumeroResolucion() {
         return numeroResolucion;
     }
@@ -898,5 +803,399 @@ public class Objetoi implements Serializable {
     public String toString() {
         return "Entidades.Objetoi[ id=" + id + " ]";
     }
-    
+
+    @XmlTransient
+    public Collection<DomicilioObjetoi> getDomicilioObjetoiCollection() {
+        return domicilioObjetoiCollection;
+    }
+
+    public void setDomicilioObjetoiCollection(Collection<DomicilioObjetoi> domicilioObjetoiCollection) {
+        this.domicilioObjetoiCollection = domicilioObjetoiCollection;
+    }
+
+    @XmlTransient
+    public Collection<ObjetoiComportamiento> getObjetoiComportamientoCollection() {
+        return objetoiComportamientoCollection;
+    }
+
+    public void setObjetoiComportamientoCollection(Collection<ObjetoiComportamiento> objetoiComportamientoCollection) {
+        this.objetoiComportamientoCollection = objetoiComportamientoCollection;
+    }
+
+    @XmlTransient
+    public Collection<ObjetoiEstado> getObjetoiEstadoCollection() {
+        return objetoiEstadoCollection;
+    }
+
+    public void setObjetoiEstadoCollection(Collection<ObjetoiEstado> objetoiEstadoCollection) {
+        this.objetoiEstadoCollection = objetoiEstadoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Boleto> getBoletoCollection() {
+        return boletoCollection;
+    }
+
+    public void setBoletoCollection(Collection<Boleto> boletoCollection) {
+        this.boletoCollection = boletoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Emideta> getEmidetaCollection() {
+        return emidetaCollection;
+    }
+
+    public void setEmidetaCollection(Collection<Emideta> emidetaCollection) {
+        this.emidetaCollection = emidetaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Certificado> getCertificadoCollection() {
+        return certificadoCollection;
+    }
+
+    public void setCertificadoCollection(Collection<Certificado> certificadoCollection) {
+        this.certificadoCollection = certificadoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Ctacte> getCtacteCollection() {
+        return ctacteCollection;
+    }
+
+    public void setCtacteCollection(Collection<Ctacte> ctacteCollection) {
+        this.ctacteCollection = ctacteCollection;
+    }
+
+    @XmlTransient
+    public Collection<Vinedo> getVinedoCollection() {
+        return vinedoCollection;
+    }
+
+    public void setVinedoCollection(Collection<Vinedo> vinedoCollection) {
+        this.vinedoCollection = vinedoCollection;
+    }
+
+    @XmlTransient
+    public Collection<ObjetoiEmergencia> getObjetoiEmergenciaCollection() {
+        return objetoiEmergenciaCollection;
+    }
+
+    public void setObjetoiEmergenciaCollection(Collection<ObjetoiEmergencia> objetoiEmergenciaCollection) {
+        this.objetoiEmergenciaCollection = objetoiEmergenciaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Cuota> getCuotaCollection() {
+        return cuotaCollection;
+    }
+
+    public void setCuotaCollection(Collection<Cuota> cuotaCollection) {
+        this.cuotaCollection = cuotaCollection;
+    }
+
+    public String getCantMateria() {
+        return cantMateria;
+    }
+
+    public void setCantMateria(String cantMateria) {
+        this.cantMateria = cantMateria;
+    }
+
+    public Double getCotizaContrato() {
+        return cotizaContrato;
+    }
+
+    public void setCotizaContrato(Double cotizaContrato) {
+        this.cotizaContrato = cotizaContrato;
+    }
+
+    public Double getCotizaInicial() {
+        return cotizaInicial;
+    }
+
+    public void setCotizaInicial(Double cotizaInicial) {
+        this.cotizaInicial = cotizaInicial;
+    }
+
+    public Double getCotizaResol() {
+        return cotizaResol;
+    }
+
+    public void setCotizaResol(Double cotizaResol) {
+        this.cotizaResol = cotizaResol;
+    }
+
+    public Short getEsMiPyme() {
+        return esMiPyme;
+    }
+
+    public void setEsMiPyme(Short esMiPyme) {
+        this.esMiPyme = esMiPyme;
+    }
+
+    public Date getFechaAnalisisPatrimonial() {
+        return fechaAnalisisPatrimonial;
+    }
+
+    public void setFechaAnalisisPatrimonial(Date fechaAnalisisPatrimonial) {
+        this.fechaAnalisisPatrimonial = fechaAnalisisPatrimonial;
+    }
+
+    public Date getFechaAsesoriaLetrada() {
+        return fechaAsesoriaLetrada;
+    }
+
+    public void setFechaAsesoriaLetrada(Date fechaAsesoriaLetrada) {
+        this.fechaAsesoriaLetrada = fechaAsesoriaLetrada;
+    }
+
+    public Date getFechaCosecha() {
+        return fechaCosecha;
+    }
+
+    public void setFechaCosecha(Date fechaCosecha) {
+        this.fechaCosecha = fechaCosecha;
+    }
+
+    public Date getFechaExpediente() {
+        return fechaExpediente;
+    }
+
+    public void setFechaExpediente(Date fechaExpediente) {
+        this.fechaExpediente = fechaExpediente;
+    }
+
+    public Date getFechaFirmaContrato() {
+        return fechaFirmaContrato;
+    }
+
+    public void setFechaFirmaContrato(Date fechaFirmaContrato) {
+        this.fechaFirmaContrato = fechaFirmaContrato;
+    }
+
+    public Date getFechaFirmaFinalizacion() {
+        return fechaFirmaFinalizacion;
+    }
+
+    public void setFechaFirmaFinalizacion(Date fechaFirmaFinalizacion) {
+        this.fechaFirmaFinalizacion = fechaFirmaFinalizacion;
+    }
+
+    public Date getFechaFirmaResolucion() {
+        return fechaFirmaResolucion;
+    }
+
+    public void setFechaFirmaResolucion(Date fechaFirmaResolucion) {
+        this.fechaFirmaResolucion = fechaFirmaResolucion;
+    }
+
+    public Date getFechaInhibicion() {
+        return fechaInhibicion;
+    }
+
+    public void setFechaInhibicion(Date fechaInhibicion) {
+        this.fechaInhibicion = fechaInhibicion;
+    }
+
+    public Date getFechaMutuo() {
+        return fechaMutuo;
+    }
+
+    public void setFechaMutuo(Date fechaMutuo) {
+        this.fechaMutuo = fechaMutuo;
+    }
+
+    public Date getFechaResolucion() {
+        return fechaResolucion;
+    }
+
+    public void setFechaResolucion(Date fechaResolucion) {
+        this.fechaResolucion = fechaResolucion;
+    }
+
+    public Date getFechaSolicitud() {
+        return fechaSolicitud;
+    }
+
+    public void setFechaSolicitud(Date fechaSolicitud) {
+        this.fechaSolicitud = fechaSolicitud;
+    }
+
+    public Date getFechaVerificacion() {
+        return fechaVerificacion;
+    }
+
+    public void setFechaVerificacion(Date fechaVerificacion) {
+        this.fechaVerificacion = fechaVerificacion;
+    }
+
+    public Short getFecovita() {
+        return fecovita;
+    }
+
+    public void setFecovita(Short fecovita) {
+        this.fecovita = fecovita;
+    }
+
+    public Double getFinanciamientoSol() {
+        return financiamientoSol;
+    }
+
+    public void setFinanciamientoSol(Double financiamientoSol) {
+        this.financiamientoSol = financiamientoSol;
+    }
+
+    public String getGastosElaboracion() {
+        return gastosElaboracion;
+    }
+
+    public void setGastosElaboracion(String gastosElaboracion) {
+        this.gastosElaboracion = gastosElaboracion;
+    }
+
+    public Date getInicioActividad() {
+        return inicioActividad;
+    }
+
+    public void setInicioActividad(Date inicioActividad) {
+        this.inicioActividad = inicioActividad;
+    }
+
+    public String getObservacionAnalisisPatrimonial() {
+        return observacionAnalisisPatrimonial;
+    }
+
+    public void setObservacionAnalisisPatrimonial(String observacionAnalisisPatrimonial) {
+        this.observacionAnalisisPatrimonial = observacionAnalisisPatrimonial;
+    }
+
+    public String getObservacionAsesoriaLetrada() {
+        return observacionAsesoriaLetrada;
+    }
+
+    public void setObservacionAsesoriaLetrada(String observacionAsesoriaLetrada) {
+        this.observacionAsesoriaLetrada = observacionAsesoriaLetrada;
+    }
+
+    public String getObservacionInhibicion() {
+        return observacionInhibicion;
+    }
+
+    public void setObservacionInhibicion(String observacionInhibicion) {
+        this.observacionInhibicion = observacionInhibicion;
+    }
+
+    public String getObservacionVerificacion() {
+        return observacionVerificacion;
+    }
+
+    public void setObservacionVerificacion(String observacionVerificacion) {
+        this.observacionVerificacion = observacionVerificacion;
+    }
+
+    public String getPrecioMateria() {
+        return precioMateria;
+    }
+
+    public void setPrecioMateria(String precioMateria) {
+        this.precioMateria = precioMateria;
+    }
+
+    public Date getPrimerVencCapital() {
+        return primerVencCapital;
+    }
+
+    public void setPrimerVencCapital(Date primerVencCapital) {
+        this.primerVencCapital = primerVencCapital;
+    }
+
+    public Date getPrimerVencInteres() {
+        return primerVencInteres;
+    }
+
+    public void setPrimerVencInteres(Date primerVencInteres) {
+        this.primerVencInteres = primerVencInteres;
+    }
+
+    public Double getQqFinal() {
+        return qqFinal;
+    }
+
+    public void setQqFinal(Double qqFinal) {
+        this.qqFinal = qqFinal;
+    }
+
+    public String getTaxiDominio() {
+        return taxiDominio;
+    }
+
+    public void setTaxiDominio(String taxiDominio) {
+        this.taxiDominio = taxiDominio;
+    }
+
+    public String getTaxiMarca() {
+        return taxiMarca;
+    }
+
+    public void setTaxiMarca(String taxiMarca) {
+        this.taxiMarca = taxiMarca;
+    }
+
+    public String getTaxiModelo() {
+        return taxiModelo;
+    }
+
+    public void setTaxiModelo(String taxiModelo) {
+        this.taxiModelo = taxiModelo;
+    }
+
+    public String getTipoCult() {
+        return tipoCult;
+    }
+
+    public void setTipoCult(String tipoCult) {
+        this.tipoCult = tipoCult;
+    }
+
+    public Double getTotalBon() {
+        return totalBon;
+    }
+
+    public void setTotalBon(Double totalBon) {
+        this.totalBon = totalBon;
+    }
+
+    public Short getValorCartera() {
+        return valorCartera;
+    }
+
+    public void setValorCartera(Short valorCartera) {
+        this.valorCartera = valorCartera;
+    }
+
+    public Date getVencimiento() {
+        return vencimiento;
+    }
+
+    public void setVencimiento(Date vencimiento) {
+        this.vencimiento = vencimiento;
+    }
+
+    public CaducidadPlazo getCaducidadPlazoid() {
+        return caducidadPlazoid;
+    }
+
+    public void setCaducidadPlazoid(CaducidadPlazo caducidadPlazoid) {
+        this.caducidadPlazoid = caducidadPlazoid;
+    }
+
+    @XmlTransient
+    public Collection<ObservacionObjetoi> getObservacionObjetoiCollection() {
+        return observacionObjetoiCollection;
+    }
+
+    public void setObservacionObjetoiCollection(Collection<ObservacionObjetoi> observacionObjetoiCollection) {
+        this.observacionObjetoiCollection = observacionObjetoiCollection;
+    }
 }
